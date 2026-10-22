@@ -1,0 +1,213 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="520"
+        x:Class="_3a.MainWindow"
+        Title="Minutnik Pomodoro"
+        Width="480" Height="520"
+        CanResize="False"
+        Background="#1E1E2E">
+
+    <Window.Styles>
+        <!-- Base text colour -->
+        <Style Selector="TextBlock">
+            <Setter Property="Foreground" Value="#CDD6F4"/>
+        </Style>
+
+        <!-- Large timer display -->
+        <Style Selector="TextBlock.timer">
+            <Setter Property="FontSize" Value="72"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontFamily" Value="Consolas,Courier New,monospace"/>
+        </Style>
+
+        <!-- Phase label (Praca / Przerwa) -->
+        <Style Selector="TextBlock.phase">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Opacity" Value="0.75"/>
+        </Style>
+
+        <!-- Cycle counter -->
+        <Style Selector="TextBlock.cycleLabel">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Opacity" Value="0.70"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="TextBlock.cycleValue">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Section headers inside settings group -->
+        <Style Selector="TextBlock.settingLabel">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Opacity" Value="0.65"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Primary button (Start/Pauza) -->
+        <Style Selector="Button.primary">
+            <Setter Property="Background" Value="#89B4FA"/>
+            <Setter Property="Foreground" Value="#1E1E2E"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Width" Value="140"/>
+            <Setter Property="Height" Value="46"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="Button.primary:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#B4D0FF"/>
+        </Style>
+
+        <!-- Secondary button (Reset) -->
+        <Style Selector="Button.secondary">
+            <Setter Property="Background" Value="#45475A"/>
+            <Setter Property="Foreground" Value="#CDD6F4"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Width" Value="140"/>
+            <Setter Property="Height" Value="46"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="Button.secondary:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#585B70"/>
+        </Style>
+
+        <!-- NumericUpDown inside settings -->
+        <Style Selector="NumericUpDown">
+            <Setter Property="Background" Value="#313244"/>
+            <Setter Property="Foreground" Value="#CDD6F4"/>
+            <Setter Property="BorderBrush" Value="#45475A"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Width" Value="90"/>
+            <Setter Property="Minimum" Value="1"/>
+            <Setter Property="Maximum" Value="120"/>
+            <Setter Property="Increment" Value="1"/>
+            <Setter Property="FormatString" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+    </Window.Styles>
+
+    <Grid RowDefinitions="Auto,Auto,Auto,Auto,*" Margin="32,28,32,28">
+
+        <!-- Title -->
+        <TextBlock Grid.Row="0"
+                   Text="POMODORO"
+                   FontSize="13"
+                   FontWeight="Bold"
+                   Foreground="#6C7086"
+                   LetterSpacing="4"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,8"/>
+
+        <!-- Phase indicator -->
+        <TextBlock Grid.Row="1"
+                   x:Name="PhaseLabel"
+                   Classes="phase"
+                   Text="Praca"
+                   Margin="0,0,0,4"/>
+
+        <!-- Progress bar -->
+        <ProgressBar Grid.Row="2"
+                     x:Name="ProgressBar"
+                     Minimum="0"
+                     Maximum="100"
+                     Value="100"
+                     Height="6"
+                     CornerRadius="3"
+                     Margin="0,0,0,12"
+                     Foreground="#89B4FA"
+                     Background="#313244"/>
+
+        <!-- Timer + cycle counter -->
+        <Grid Grid.Row="3" ColumnDefinitions="*,Auto,*" Margin="0,0,0,20">
+            <!-- spacer left -->
+            <StackPanel Grid.Column="0"/>
+
+            <!-- Timer -->
+            <TextBlock Grid.Column="1"
+                       x:Name="TimerDisplay"
+                       Classes="timer"
+                       Text="25:00"
+                       Foreground="#89B4FA"/>
+
+            <!-- Cycle counter -->
+            <StackPanel Grid.Column="2"
+                        Orientation="Vertical"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        Margin="12,0,0,0">
+                <TextBlock Classes="cycleLabel" Text="Cykle"/>
+                <TextBlock x:Name="CycleDisplay"
+                           Classes="cycleValue"
+                           Text="0"
+                           Foreground="#A6E3A1"/>
+                    <ListBox x:Name="HistoryList" />
+
+            </StackPanel>
+        </Grid>
+
+        <!-- Bottom section: buttons + settings -->
+        <StackPanel Grid.Row="4" Spacing="20" VerticalAlignment="Top">
+
+            <!-- Buttons row -->
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Spacing="16">
+                <Button x:Name="StartPauseButton"
+                        Classes="primary"
+                        Content="Start"
+                        Click="OnStartPauseClicked"/>
+                <Button x:Name="ResetButton"
+                        Classes="secondary"
+                        Content="Reset"
+                        Click="OnResetClicked"/>
+            </StackPanel>
+
+            <!-- Separator -->
+            <Rectangle Height="1" Fill="#313244" Margin="0,4,0,4"/>
+
+            <!-- Settings group -->
+            <TextBlock Text="Ustawienia"
+                       FontSize="12"
+                       FontWeight="SemiBold"
+                       Foreground="#6C7086"
+                       LetterSpacing="2"
+                       HorizontalAlignment="Center"/>
+
+            <Grid ColumnDefinitions="*,Auto,Auto,*" RowDefinitions="Auto,Auto" HorizontalAlignment="Center">
+                <!-- Work duration -->
+                <TextBlock Grid.Row="0" Grid.Column="1"
+                           Classes="settingLabel"
+                           Text="Praca (min)"
+                           Margin="0,0,10,8"/>
+                <NumericUpDown Grid.Row="0" Grid.Column="2"
+                               x:Name="WorkMinutesInput"
+                               Value="25"
+                               ValueChanged="OnWorkMinutesChanged"/>
+
+                <!-- Break duration -->
+                <TextBlock Grid.Row="1" Grid.Column="1"
+                           Classes="settingLabel"
+                           Text="Przerwa (min)"
+                           Margin="0,0,10,0"/>
+                <NumericUpDown Grid.Row="1" Grid.Column="2"
+                               x:Name="BreakMinutesInput"
+                               Value="5"
+                               ValueChanged="OnBreakMinutesChanged"/>
+            </Grid>
+
+        </StackPanel>
+    </Grid>
+</Window>
