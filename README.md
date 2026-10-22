@@ -27,8 +27,8 @@ model: `cl100k_base` (odpowiednik Claude/GPT-4).
 
 | Wersja wiadomości | Liczba tokenów |
 |---|---|
-| Po polsku | *(zmierz i wpisz)* |
-| Po angielsku | *(zmierz i wpisz)* |
+| Po polsku | 201|
+| Po angielsku | 140 |
 
 > Polska wiadomość zaczyna się od: „Zbuduj minutnik w tym projekcie Avalonia…"
 
@@ -46,8 +46,8 @@ model: `cl100k_base` (odpowiednik Claude/GPT-4).
 
 | Wpisana wartość | Co się stało |
 |---|---|
-| `25,5` | *(uruchom aplikację, wpisz w pole „Praca (min)" i opisz)* |
-| `25.5` | *(uruchom aplikację, wpisz w pole „Praca (min)" i opisz)* |
+| `25,5` | Nic sie nie stalo, nie zaokraglilo |
+| `25.5` | Nic sie nie stalo |
 
 > Wskazówka: pole przyjmuje tylko całe liczby (kod rzutuje wartość na `int`).
 > Zachowanie separatora dziesiętnego zależy od ustawień regionalnych systemu.
